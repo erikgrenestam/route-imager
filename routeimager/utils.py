@@ -43,8 +43,20 @@ def read_maps_api_key(path=(cfg.root / 'credentials.txt')):
     return api_key
 
 @contextmanager
-def tile_session_token(api_key, map_type="satellite", language="en-US", region="us", highDpi=True,
-                  layer_types=None, overlay=False, scale="scaleFactor4x", styles=None):
+def tile_session_token(api_key: str, tilesize: int, map_type="satellite", language="en-US", region="us",
+                  layer_types=None, overlay=False, styles=None):
+    if tilesize == 256:
+        highDpi = False
+        scale = "scaleFactor1x"
+    elif tilesize == 512:
+        highDpi = True
+        scale = "scaleFactor2x"
+    elif tilesize == 1024:
+        highDpi = True
+        scale = "scaleFactor4x"
+    else:
+        raise ValueError(f"tilesize must be in [256, 512, 1024], got {tilesize}")
+
     url = f"https://tile.googleapis.com/v1/createSession?key={api_key}"
     headers = {
         "Content-Type": "application/json"
