@@ -115,6 +115,11 @@ def geocode_address(address, api_key=None):
         print(f"An error occurred while making the request: {e}")
         return None
     
+def meters_per_degree_lat_lon(lat):
+    lat_len = 111132.92 - 559.82 * math.cos(2 * lat) + 1.175 * math.cos(4 * lat)  # meters per degree latitude
+    lon_len = 111412.84 * math.cos(lat) - 93.5 * math.cos(3 * lat)  # meters per degree longitude
+    return lat_len, lon_len
+
 def decimal_degrees_to_meters(decimal_degrees, latitude):
     """
     Converts decimal degrees to meters based on the latitude.
@@ -133,8 +138,7 @@ def decimal_degrees_to_meters(decimal_degrees, latitude):
     lat_rad = math.radians(latitude)
     
     # Calculate the conversion factors
-    m_per_deg_lat = 111132.92 - 559.82 * math.cos(2 * lat_rad) + 1.175 * math.cos(4 * lat_rad)
-    m_per_deg_lon = 111412.84 * math.cos(lat_rad) - 93.5 * math.cos(3 * lat_rad)
+    m_per_deg_lat, m_per_deg_lon = meters_per_degree_lat_lon(latitude)
     
     # Calculate the distance in meters
     distance_lat = decimal_degrees * m_per_deg_lat
