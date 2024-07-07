@@ -316,7 +316,7 @@ class RouteTiler():
                 new_coords.append(intermediate_point)
 
         new_coords.append(line.coords[-1])  # Add the last coordinate
-        logging.info(f"Points along line interpolated. Original length: {len(line.coords)}, new line: {len(new_coords)}")
+        logging.info(f"Points along line interpolated. Original no. of points: {len(line.coords)}, interpolated: {len(new_coords)}")
         return LineString(new_coords)
 
 
@@ -325,7 +325,7 @@ class RouteTiler():
 if __name__ == '__main__':
     # Configure logging
     logging.basicConfig(level=logging.INFO)
-    rt = RouteTiler(image_folder='test_stitch_12', zoom_level=12, tilesize=1024, wide_route=True)
+    rt = RouteTiler(image_folder='test_stitch_12', zoom_level=12, tilesize=1024, wide_route=True, buffer_crs='EPSG:3006')
     rt.make_image_from_route(origin="Fregattgatan 3, 21113 Malmö, Sweden",
                   destination="Stockholm, Sweden", download=False)
 
